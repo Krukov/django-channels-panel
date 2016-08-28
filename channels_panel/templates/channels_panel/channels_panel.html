@@ -1,0 +1,66 @@
+{% load i18n %}
+
+{% load staticfiles %}
+
+<!--Consumers-->
+<h4 style="text-align: center">{% trans "Consumers" %}</h4>
+{% for consumer in consumers %}
+    <h3>{{ consumer.name }}</h3>
+    <h5>Channels - {{ consumer.channels }}</h5>
+    <h5>Prefix - {{ consumer.prefix }}</h5>
+    <h5>Filters - {{ consumer.filters }}</h5>
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans "Channel" %}</th>
+                <th>{% trans "Kwargs" %}</th>
+                <th>{% trans "Message" %}</th>
+                {% if profile %}
+                    <th>{% trans "Time (ms)" %}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody class="consumer_content" data-consumer-group="{{ consumer.group }}">
+            <tr>
+                <td colspan="{{ profile|yesno:'4,3' }}">No content</td>
+            </tr>
+        </tbody>
+    </table>
+{% endfor %}
+<br>
+
+<!--Groups-->
+<h4 style="text-align: center">{% trans "Groups" %}</h4>
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Group" %}</th>
+            <th>{% trans "Event" %}</th>
+            <th>{% trans "Content" %}</th>
+        </tr>
+    </thead>
+    <tbody id="groups_table">
+        <tr id="groups_no_content">
+            <td colspan="3">No content</td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<!--Channels-->
+<h4 style="text-align: center">{% trans "Channels" %}</h4>
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Channel" %}</th>
+            <th>{% trans "Event" %}</th>
+            <th>{% trans "Content" %}</th>
+        </tr>
+    </thead>
+    <tbody id="channels_table">
+        <tr id="channels_no_content">
+            <td colspan="3">No content</td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="{% static 'channels_panel/channels_panel.js' %}" type="text/javascript"></script>
