@@ -17,7 +17,7 @@ setup(
     description='A Django Debug Toolbar panel for Channels',
     long_description=open('README.rst').read(),
     keywords='',
-    requires=[
+    install_requires=[
         'django-debug-toolbar',
         'channels',
     ],
