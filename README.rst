@@ -31,7 +31,7 @@ Defaults::
     "ONLY_CHANNELS" -  None
     "EXCLUDE_CHANNELS" - ['http.*', 'websocket.*']
     "ONLY_GROUPS" - None
-    "EXCLUDE_GROUPS" - [GROUP_PREFIX + '.*']
+    "EXCLUDE_GROUPS" - ['debug' + '.*']
 
 License
 -------
