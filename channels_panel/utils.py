@@ -73,28 +73,26 @@ def layer_factory(base, alias):
 def debug_decorator(consumer, alias):
     @wraps(consumer)
     def _consumer(message, *args, **kwargs):
-        if in_debug(message.channel.name):
-            name = name_that_thing(consumer)
-            group = get_consumer_group(name)
-            info = {
-                'layer': alias,
-                'channel': message.channel.name,
-                'consumer': name,
-                'call_args': args,
-                'call_kwargs': kwargs,
-                'message': message.content,
-            }
+        name = name_that_thing(consumer)
+        group = get_consumer_group(name)
+        info = {
+            'layer': alias,
+            'channel': message.channel.name,
+            'consumer': name,
+            'call_args': args,
+            'call_kwargs': kwargs,
+            'message': message.content,
+        }
 
-            try:
-                consumer(message, *args, **kwargs)
-            except Exception:
-                info['traceback'] = traceback.format_exc()
-                send_debug(info, 'error', group)
-                raise
-            else:
-                send_debug(info, 'run', group)
-            return
-        return consumer(message, *args, **kwargs)
+        try:
+            consumer(message, *args, **kwargs)
+        except Exception:
+            info['traceback'] = traceback.format_exc()
+            send_debug(info, 'error', group)
+            raise
+        else:
+            send_debug(info, 'run', group)
+        return
     return _consumer
 
 
