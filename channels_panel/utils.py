@@ -12,7 +12,7 @@ from channels.asgi import channel_layers
 from channels.routing import Route, Include
 from channels.utils import name_that_thing
 
-from . import GROUP_NAME_GROUPS, GROUP_NAME_CHANNELS, GROUP_PREFIX
+from . import GROUP_NAME_GROUPS, GROUP_NAME_CHANNELS, GROUP_PREFIX, _MARK
 from .settings import get_setting_value
 
 
@@ -25,7 +25,15 @@ class MessageJSONEncoder(DjangoJSONEncoder):
 
 
 def send_debug(data, event, group=GROUP_NAME_GROUPS):
-    Group(group).send({'text': json.dumps({'data': data, 'event': event}, cls=MessageJSONEncoder)})
+    Group(group).send({'text': json.dumps({'data': data, 'event': event, 'mark': _MARK}, cls=MessageJSONEncoder)})
+
+
+def _is_marked(message):
+    if 'text' in message:
+        try:
+            return json.loads(message['text']).get('mark', None) == _MARK
+        except ValueError:
+            return False
 
 
 def _get_route(route, prefix=None):
@@ -46,7 +54,7 @@ def layer_factory(base, alias):
     class DebugChannelLayer(base.channel_layer.__class__):
 
         def send(self, channel, message):
-            if in_debug(channel):
+            if in_debug(channel) and not _is_marked(message):
                 send_debug({'channel': channel, 'layer': alias, 'content': message},
                            'send', GROUP_NAME_CHANNELS)
             return super(DebugChannelLayer, self).send(channel, message)
