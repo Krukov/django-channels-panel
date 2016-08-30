@@ -1,0 +1,3 @@
+include README.rst
+recursive-include channels_panel/static *
+recursive-include channels_panel/templates *
