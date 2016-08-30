@@ -124,3 +124,7 @@ def md5(message):
 
 def get_consumer_group(consumer, layer=DEFAULT_CHANNEL_LAYER):
     return '.'.join([GROUP_PREFIX, layer, md5(consumer)])
+
+
+def filters_to_string(filters):
+    return ', '.join(['{0}: {1}'.format(f, pattern.pattern) for f, pattern in filters.items()])
