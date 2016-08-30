@@ -1,4 +1,4 @@
-from django.apps import AppConfig
+from django.apps import AppConfig, apps
 from django.conf import settings
 
 from channels.asgi import channel_layers
@@ -14,7 +14,7 @@ class ChannelsDebugConfig(AppConfig):
     verbose_name = "Channels Debug Toolbar Panel"
 
     def ready(self):
-        if 'debug_toolbar' not in settings.INSTALLED_APPS:
+        if not apps.is_installed('debug_toolbar'):
             return
 
         # patch routes: adding debug routes to default layer
@@ -22,12 +22,12 @@ class ChannelsDebugConfig(AppConfig):
             channel_layers[DEFAULT_CHANNEL_LAYER].router.add_route(route)
 
         # patch layers: substitution by debug layer with events monitoring
-        for alias in channel_layers.backends.keys():
+        for alias in getattr(settings, "CHANNEL_LAYERS", {}).keys():
             new_backend = layer_factory(channel_layers[alias],  alias)
             channel_layers.set(alias, new_backend)
 
         # patch routes: wrap routes debug decorator
-        for alias in channel_layers.backends.keys():
+        for alias in getattr(settings, "CHANNEL_LAYERS", {}).keys():
             _match = channel_layers[alias].router.root.match
 
             def new_match(message):
