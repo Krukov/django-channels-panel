@@ -3,7 +3,7 @@ from channels import DEFAULT_CHANNEL_LAYER
 from channels.utils import name_that_thing
 from debug_toolbar.panels import Panel
 
-from .utils import get_routes, in_debug, get_consumer_group, filters_to_string
+from .utils import get_routes, in_debug, get_consumer_group, filters_to_string, is_no_debug
 from .settings import get_setting_value
 
 
@@ -33,7 +33,7 @@ class ChannelsDebugPanel(Panel):
         for channels, consumer, filters, prefix in get_routes(DEFAULT_CHANNEL_LAYER):
             if any((in_debug(channel) for channel in channels)):
                 name = name_that_thing(consumer)
-                if name in 'channels.routing.null_consumer':
+                if name in 'channels.routing.null_consumer' or is_no_debug(consumer):
                     continue
                 consumers.append({
                     'name': name,

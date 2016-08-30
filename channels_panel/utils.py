@@ -25,13 +25,13 @@ class MessageJSONEncoder(DjangoJSONEncoder):
 
 
 def send_debug(data, event, group=GROUP_NAME_GROUPS):
-    Group(group).send({'text': json.dumps({'data': data, 'event': event, 'mark': _MARK}, cls=MessageJSONEncoder)})
+    Group(group).send({'text': json.dumps({'data': data, 'event': event, _MARK: _MARK}, cls=MessageJSONEncoder)})
 
 
 def _is_marked(message):
     if 'text' in message:
         try:
-            return json.loads(message['text']).get('mark', None) == _MARK
+            return json.loads(message['text']).get(_MARK, None) == _MARK
         except ValueError:
             return False
 
@@ -128,3 +128,7 @@ def get_consumer_group(consumer, layer=DEFAULT_CHANNEL_LAYER):
 
 def filters_to_string(filters):
     return ', '.join(['{0}: {1}'.format(f, pattern.pattern) for f, pattern in filters.items()])
+
+
+def is_no_debug(consumer):
+    return getattr(consumer, _MARK, False)

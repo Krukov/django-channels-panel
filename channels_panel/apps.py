@@ -4,7 +4,7 @@ from django.conf import settings
 from channels.asgi import channel_layers
 from channels import DEFAULT_CHANNEL_LAYER
 
-from .utils import layer_factory, debug_decorator, in_debug
+from .utils import layer_factory, debug_decorator, in_debug, is_no_debug
 from . import routes
 
 
@@ -33,7 +33,7 @@ class ChannelsDebugConfig(AppConfig):
             def new_match(message):
                 if in_debug(message.channel.name):
                     m = _match(message)
-                    if m:
+                    if m and is_no_debug(m[0]):
                         return debug_decorator(m[0], alias), m[1]
                 return _match(message)
             channel_layers[alias].router.root.match = new_match

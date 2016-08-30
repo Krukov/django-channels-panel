@@ -1,8 +1,14 @@
 from channels.generic.websockets import WebsocketConsumer
 
-from . import GROUP_NAME_CHANNELS, GROUP_NAME_GROUPS, GROUP_PREFIX
+from . import GROUP_NAME_CHANNELS, GROUP_NAME_GROUPS, GROUP_PREFIX, _MARK
 
 
+def no_debug(consumer):
+    setattr(consumer, _MARK, True)
+    return consumer
+
+
+@no_debug
 class DebugGroupsConsumer(WebsocketConsumer):
 
     def connection_groups(self, group, **kwargs):

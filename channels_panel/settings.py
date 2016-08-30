@@ -3,7 +3,7 @@ from django.conf import settings
 
 DEFAULTS = {
     'ONLY_CHANNELS': None,
-    'EXCLUDE_CHANNELS': ['http.*', 'websocket.*'],
+    'EXCLUDE_CHANNELS': ['http.*', ],
     'ONLY_GROUPS': None,
     'EXCLUDE_GROUPS': [GROUP_PREFIX + '.*'],
     'PROFILE_CONSUMERS': False,
