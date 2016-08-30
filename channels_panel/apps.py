@@ -33,7 +33,7 @@ class ChannelsDebugConfig(AppConfig):
             def new_match(message):
                 if in_debug(message.channel.name):
                     m = _match(message)
-                    if m and is_no_debug(m[0]):
+                    if m and not is_no_debug(m[0]):
                         return debug_decorator(m[0], alias), m[1]
                 return _match(message)
             channel_layers[alias].router.root.match = new_match

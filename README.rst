@@ -29,7 +29,7 @@ Use ``CHANNELS_PANEL`` for configure django-channels-panel:
 Defaults::
 
     "ONLY_CHANNELS" -  None
-    "EXCLUDE_CHANNELS" - ['http.*', 'websocket.*']
+    "EXCLUDE_CHANNELS" - ['http.*', ]
     "ONLY_GROUPS" - None
     "EXCLUDE_GROUPS" - ['debug' + '.*']
 
