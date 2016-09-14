@@ -1,5 +1,5 @@
-$(function () {
-    // Correctly decide between ws:// and wss://
+(function ($) {
+     // Correctly decide between ws:// and wss://
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var td = function (body) { return '<td>' + body + '</td>'; }
 
@@ -12,10 +12,8 @@ $(function () {
         socket.onmessage = function(message) {
             var data = JSON.parse(message.data).data;
             // Handle errors
-            if (data.error) {
-                alert(data.error);
-                return;
-            }
+            $this.find('.no_content').remove()
+
             // Handle message
             var template = td(data.channel) + td(JSON.stringify(data.call_kwargs)) + td(JSON.stringify(data.message));
             var trClass = odd ? 'djDebugOdd' : 'djDebugEven';
@@ -61,5 +59,4 @@ $(function () {
     };
 
     channelsSocket.onopen = function() { console.log("Connected to the debug channels socket"); }
-
-});
+})(djdt.jQuery);
