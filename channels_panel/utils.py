@@ -48,14 +48,14 @@ def debug_decorator(consumer, alias):
         }
 
         try:
-            consumer(message, *args, **kwargs)
+            result = consumer(message, *args, **kwargs)
         except Exception:
-            info['traceback'] = traceback.format_exc()
+            info['message'] = traceback.format_exc()
             send_debug(info, 'error', group)
             raise
         else:
             send_debug(info, 'run', group)
-        return
+            return result
     return _consumer
 
 
