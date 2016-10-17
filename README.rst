@@ -8,6 +8,8 @@ About
 
 This is a panel for ``Django Debug Toolbar`` that displays channels, groups and consumers events.
 
+.. image:: docs/screenshot.png
+
 Installation
 ------------
 
