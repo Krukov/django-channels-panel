@@ -1,6 +1,7 @@
 import json
 import fnmatch
 import hashlib
+import sys
 import traceback
 from functools import wraps
 
@@ -12,12 +13,15 @@ from channels.utils import name_that_thing
 from . import GROUP_NAME_GROUPS, GROUP_PREFIX, _MARK
 from .settings import get_setting_value
 
+PY3K = sys.version_info >= (3, 0)
 
 class MessageJSONEncoder(DjangoJSONEncoder):
 
     def default(self, o):
         if isinstance(o, bytes):
-            return o.decode('utf-8')
+            if not PY3K:
+                return o.decode('utf-8')
+            return o.decode('utf-8', 'backslashreplace')
         return super(MessageJSONEncoder, self).default(o)
 
 
